@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en-us">
+	<head>
+		<title>car shop</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="stylesheet.css">
+		<script src="https://code.jquery.com/jquery-1.12.4.js"
+		  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+		  crossorigin="anonymous">
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.js"></script>
+	</head>
+	<body>
+		<header>
+			<h1>Buy Used Cars</h1>
+			<form>
+				<script id="make-template" type="text/x-handlebars-template">
+					<label for="make">Make</label>
+					<select name="Make" id="make">
+						<option value="All" selected>All</option>
+						{{#each make}}
+							<option value={{.}}>{{.}}</option>
+						{{/each}}
+					</select>
+				</script>
+				<script id="model-template" type="text/x-handlebars-template">
+					<label for="model">Model</label>
+					<select name="Model" id="model">
+						<option value="All" selected>All</option>
+						{{#each model}}
+							<option value={{.}}>{{.}}</option>
+						{{/each}}
+					</select>
+				</script>
+				<script id="price-template" type="text/x-handlebars-template">
+					<label for="price">Price</label>
+					<select name="Price" id="price">
+						<option value="All">All</option>
+						{{#each price}}
+							<option value={{.}}>{{.}}</option>
+						{{/each}}
+					</select>
+				</script>
+				<script id="year-template" type="text/x-handlebars-template">
+					<label for="year">Year</label>
+					<select name="Year" id="year">
+						<option value="All">All</option>
+						{{#each year}}
+							<option value={{.}}>{{.}}</option>
+						{{/each}}
+					</select>
+				</script>
+				<button id="filter">Filter</button>
+			</form>
+		</header>
+		<main>
+			<div id="cars">
+			</div>
+			<script id="car-template" type="text/x-handlebars-template">
+				<div class="car">
+					<figure>
+						<img src={{image}}>
+						<figcaption>{{make}} {{model}}</figcaption>
+					</figure>
+					<dl>
+						<dt>Year:</dt>
+						<dd>{{year}}</dd>
+						<dt>Price:</dt>
+						<dd>${{price}}</dd>
+					</dl>
+					<button class="buy">Buy</button>
+				<div>
+			</script>
+		</main>
+		<script src="script.js"></script>
+	</body>
+</html>
