@@ -18,23 +18,21 @@ var shop = {
     this.handleSelection('', e.target.id);
   },
   handleSelection: function(e, currentCategory) {
-    this.setFilter(currentCategory);
+    this.setFilter();
     this.filterCars(currentCategory);
     this.renderFilter();
-    this.setFilterValues();
+    this.setSelected();
   },
   handleFilter: function(e) {
     e.preventDefault();
     this.renderCars();
   },
-  setFilter: function(currentCategory) {
+  setFilter: function() {
     this.filter = {};
-    $('select').each(function(i, category) {
-      this.filter[category.id] = category.value;
-    }.bind(this));
+    $('select').each((i, category) => this.filter[category.id] = category.value);
   },
   filterCars: function(curCat) {
-    this.filteredCars = this.cars.filter(function(car) {
+    this.filteredCars = this.allCars.filter(function(car) {
       if (curCat !== 'make' && this.filter.make !== 'All' && this.filter.make !== car.make) return false;
       if (curCat !== 'model' && this.filter.model !== 'All' && this.filter.model !== car.model) return false;
       if (curCat !== 'year' && this.filter.year !== 'All' && +this.filter.year !== car.year) return false;
@@ -44,12 +42,17 @@ var shop = {
   },
   renderCars: function() {
     this.$cars.children().remove();
-    this.filteredCars.forEach(function(car) {
-      $('#cars').append(this.loadTemplate(car, this.carTemplate));
-    }.bind(this));
+    this.filteredCars.forEach(car => $('#cars').append(this.loadTemplate(car, this.carTemplate)));
   },
   renderFilter: function() {
     $('.filter-template').remove();
+    var unique = this.uniqueOptions();
+    this.categories.forEach((category) => {
+      var source = $('#' + category + '-template').html();
+      $('#' + category).append(this.loadTemplate(unique, source));
+    });
+  },
+  uniqueOptions: function() {
     var unique = {};
     this.categories.forEach(category => unique[category] = []);
     this.filteredCars.forEach((car) => {
@@ -59,16 +62,12 @@ var shop = {
     });
     unique.price.sort((a, b) => a - b);
     unique.year.sort((a, b) => a - b);
-    this.categories.forEach((category) => {
-      var source = $('#' + category + '-template').html();
-      $('#' + category).append(this.loadTemplate(unique, source));
-    });
+    return unique;
   },
-  setFilterValues: function() {
+  setSelected: function() {
     $('select').each((i, selector) => {
       var $element = $('option[value="' + this.filter[selector.id] + '"]');
       if ($element.val() !== 'All') $element[0].selected = 'selected';
-      console.log($element.val(), $element[0])
     });
   },
   loadTemplate: function(context, source) {
@@ -82,8 +81,8 @@ var shop = {
     this.carTemplate = $('#car-template').html();
 
     this.categories = ['make', 'model', 'year', 'price']
-    this.cars = cars;
-    this.filteredCars = this.cars;
+    this.allCars = cars;
+    this.filteredCars = this.allCars;
     this.renderCars();
     this.renderFilter();
     this.registerHandlers();
