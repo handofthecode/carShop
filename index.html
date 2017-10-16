@@ -16,42 +16,42 @@
 			<form>
 				<div id="selectors">
 				</div>
-				<script id="make-template" type="text/x-handlebars-template">
 					<label for="make">Make</label>
 					<select name="Make" id="make">
 						<option value="All" selected>All</option>
-						{{#each make}}
-							<option value={{.}}>{{.}}</option>
-						{{/each}}
+						<script id="make-template" type="text/x-handlebars-template">
+							{{#each make}}
+								<option class="filter-template" value={{.}}>{{.}}</option>
+							{{/each}}
+						</script>
 					</select>
-				</script>
-				<script id="model-template" type="text/x-handlebars-template">
 					<label for="model">Model</label>
 					<select name="Model" id="model">
 						<option value="All" selected>All</option>
-						{{#each model}}
-							<option value={{.}}>{{.}}</option>
-						{{/each}}
+						<script id="model-template" type="text/x-handlebars-template">
+							{{#each model}}
+								<option class="filter-template" value={{.}}>{{.}}</option>
+							{{/each}}
+						</script>
 					</select>
-				</script>
-				<script id="price-template" type="text/x-handlebars-template">
 					<label for="price">Price</label>
 					<select name="Price" id="price">
 						<option value="All">All</option>
-						{{#each price}}
-							<option value={{.}}>{{.}}</option>
-						{{/each}}
+						<script id="price-template" type="text/x-handlebars-template">
+							{{#each price}}
+								<option class="filter-template" value={{.}}>{{.}}</option>
+							{{/each}}
+						</script>
 					</select>
-				</script>
-				<script id="year-template" type="text/x-handlebars-template">
 					<label for="year">Year</label>
 					<select name="Year" id="year">
 						<option value="All">All</option>
-						{{#each year}}
-							<option value={{.}}>{{.}}</option>
-						{{/each}}
+						<script id="year-template" type="text/x-handlebars-template">
+							{{#each year}}
+								<option class="filter-template" value={{.}}>{{.}}</option>
+							{{/each}}
+						</script>
 					</select>
-				</script>
 				<button id="filter">Filter</button>
 			</form>
 		</header>

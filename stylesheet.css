@@ -12,7 +12,9 @@ mark {
 abbr { border: none; }
 summary::-webkit-details-marker { display: none; }
 
-
+select {
+	width: 75px;
+}
 header {
 	background-color: gold;
 	padding: 10px;

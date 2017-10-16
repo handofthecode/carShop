@@ -12,16 +12,27 @@ var shop = {
   registerHandlers: function() {
     this.$filter.on('click', this.handleFilter.bind(this));
     this.$form.on('change', this.handlePrefilter.bind(this));
+    this.$form.on('mouseover', 'select', this.handleSelectedCategory.bind(this));
+  },
+  handleSelectedCategory: function(e) {
+    this.setFilter(e.target.id);
+    this.filterCars();
+    this.renderFilter();
+    this.setFilterValues(e.target.id);
   },
   handleFilter: function(e) {
     e.preventDefault();
     this.renderCars();
   },
-  setFilter: function() {
+  setFilter: function(currentCategory) {
     this.filter = {};
     $('select').each(function(i, category) {
       this.filter[category.id] = category.value;
     }.bind(this));
+    if (currentCategory) {
+      this.cachedValue[currentCategory] = this.filter[currentCategory];
+      this.filter[currentCategory] = "All";
+    }
   },
   filterCars: function() {
     this.filteredCars = this.cars.filter(function(car) {
@@ -45,7 +56,7 @@ var shop = {
     this.setFilterValues();
   },
   renderFilter: function() {
-    $('#selectors').children().remove();
+    $('.filter-template').remove();
     var unique = {};
     this.categories.forEach(category => unique[category] = []);
     this.filteredCars.forEach((car) => {
@@ -57,16 +68,18 @@ var shop = {
     unique.year.sort((a, b) => a - b);
     this.categories.forEach((category) => {
       var source = $('#' + category + '-template').html();
-      $('#selectors').append(this.loadTemplate(unique, source));
+      $('#' + category).append(this.loadTemplate(unique, source));
     });
   },
-  setFilterValues: function() {
+  setFilterValues: function(category) {
+    console.log(category);
     $('select').each((i, selector) => {
       var $element = $('option[value="' + this.filter[selector.id] + '"]');
-
-      if ($element.val() !== 'All') {
-        $('option[value="' + this.filter[selector.id] + '"]')[0].selected = 'selected';
+      if (selector.id === category) {
+        $('option[value="' + this.cachedValue[category])[0].selected = 'selected';
+        this.cachedValue = {};
       }
+      else if ($element.val() !== 'All') $element[0].selected = 'selected';
     });
   },
   loadTemplate: function(context, source) {
@@ -79,6 +92,7 @@ var shop = {
     this.$form = $('form');
     this.carTemplate = $('#car-template').html();
 
+    this.cachedValue = {};
     this.categories = ['make', 'model', 'year', 'price']
     this.cars = cars;
     this.filteredCars = this.cars;
